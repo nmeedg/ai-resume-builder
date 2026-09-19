@@ -4,8 +4,8 @@ import "./globals.css";
 
 
 export const metadata: Metadata = {
-  title: "TailrCV",
-  description: "TailrCV",
+  title: "Tailrcv - Tailor Your Resume to Any Job Offer",
+  description: "AI adapts your resume to any job offer. Fill your profile once, generate tailored resumes instantly",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
