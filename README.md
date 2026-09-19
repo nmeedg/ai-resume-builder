@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tailrcv
 
-## Getting Started
+Tailrcv is an AI-powered resume builder. Given a job posting, it adapts a user's resume to match that specific offer.
 
-First, run the development server:
+## Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Instead of producing one generic resume, Tailrcv adapts an existing resume to each job offer the user applies to. The user submits an offer, selects which resume format to adapt, and chooses how much control they want over the process.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The product is built around two axes:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Resume format** : the user chooses which version of their resume to adapt: an existing ("old") format already on file, or a new format being built for this application.
+2. **Generation mode** : the user chooses how the adaptation is produced: fully automatic, or step-by-step manual editing.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## How it works
 
-## Learn More
+### Step 0 : Build the user profile (one time)
+Before adapting any resume, the user fills in their profile once: personal information, work experience, education, skills, certifications, and any other reusable resume content. This profile is stored in the application and becomes the single source of truth for that user.
 
-To learn more about Next.js, take a look at the following resources:
+From this point on, the user is never asked to re-enter this information. Every job offer submitted afterward is adapted directly from the stored profile, in both Automatic and Manual mode.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Step 1 : Submit the job offer
+The user provides the job offer (as text, a link, or an uploaded file).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Step 2 : Choose the resume format
+The user selects which resume to adapt: an existing one already stored in the app, or a new one being created for this specific application.
 
-## Deploy on Vercel
+### Step 3 : Choose a generation mode
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Automatic mode**
+The user submits the offer along with their base resume information. The application analyzes the offer, identifies the most relevant experience and skills, rewrites and reorganizes the resume content, and returns a completed draft with no further input required.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Manual mode**
+The user builds the resume section by section (experience, skills, education, and so on), with AI assistance available at each step to suggest wording, highlight relevant keywords from the offer, and refine content. This mode is closer in spirit to tools like Teal, giving the user direct control over the final result.
+
+## Core features
+
+- Job offer submission (text, link, or file upload)
+- Selection between an existing and a new resume format
+- Automatic mode for one-shot resume generation
+- Manual mode for guided, field-by-field editing with AI assistance
+- Keyword and content matching against the submitted job offer
+- Resume export (PDF)
