@@ -8,7 +8,14 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
   baseURL: process.env.BETTER_AUTH_URL,
-  emailAndPassword: { enabled: true, requireEmailVerification: true, autoSignIn: false },
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: true,
+    autoSignIn: false,
+    sendResetPassword: async ({ user, url }) => {
+      void sendMail(user.email, "reset_password", url);
+    },
+  },
   emailVerification: {
     sendOnSignUp: true,
     sendOnSignIn: true,
