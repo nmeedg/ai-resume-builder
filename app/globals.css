@@ -135,3 +135,17 @@
     @apply font-sans;
   }
 }
+
+
+.loader {
+  width: 12px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: l5 1s infinite linear alternate;
+}
+@keyframes l5 {
+    0%  {box-shadow: 20px 0 var(--primary), -20px 0 var(--primary-foreground);background: var(--primary) }
+    33% {box-shadow: 20px 0 var(--primary), -20px 0 var(--primary-foreground);background: var(--primary-foreground)}
+    66% {box-shadow: 20px 0 var(--primary-foreground),-20px 0 var(--primary); background: var(--primary-foreground)}
+    100%{box-shadow: 20px 0 var(--primary-foreground),-20px 0 var(--primary); background: var(--primary) }
+}

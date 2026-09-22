@@ -1,18 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormData, registerSchema } from "@/lib/types";
-import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import Loader from "@/components/shared/Loader";
 
 export default function Register() {
   const [isSent, setIsSent] = useState(false);
   const [sentEmail, setSentEmail] = useState("");
+  const [isRensending, startRensending] = useTransition();
 
   const {
     register,
@@ -27,10 +28,8 @@ export default function Register() {
       confirmPassword: "",
     },
   });
-  const router = useRouter();
 
   const onSubmit = async (data: RegisterFormData) => {
-    console.log("Register data submitted:", data);
     const { error } = await authClient.signUp.email({
       name: data.username,
       email: data.email,
@@ -49,16 +48,16 @@ export default function Register() {
 
   const handleResend = async () => {
     if (!sentEmail) return;
-    const { error } = await authClient.sendVerificationEmail({
-      email: sentEmail,
-      callbackURL: "/workspace",
-    });
+    startRensending(async () => {
+      const { error } = await authClient.sendVerificationEmail({
+        email: sentEmail,
+        callbackURL: "/workspace",
+      });
 
-    if (error) {
-      toast.error(error.message);
-    } else {
-      toast.success("Verification email resent!");
-    }
+      if (!error) {
+        toast.success("Verification email resent!");
+      }
+    });
   };
 
   return (
@@ -98,9 +97,10 @@ export default function Register() {
             <button
               onClick={handleResend}
               type="button"
+              disabled={isRensending}
               className="mt-6 w-full h-11 rounded-full text-white bg-brand-teal hover:bg-brand-teal-hover transition-colors font-medium text-sm cursor-pointer"
             >
-              Resend verification link
+              {isRensending ? "Resending..." : "Resend verification link"}
             </button>
 
             <div className="mt-6">
@@ -161,7 +161,6 @@ export default function Register() {
               <div className="w-full h-px bg-gray-300/90"></div>
             </div>
 
-            {/* Username Field */}
             <div className="w-full flex flex-col">
               <div
                 className={`flex items-center w-full bg-transparent border ${errors.username ? "border-red-500" : "border-gray-300/60 focus-within:border-brand-teal"} h-12 rounded-full overflow-hidden pl-6 pr-4 gap-2 transition-colors`}
@@ -194,7 +193,6 @@ export default function Register() {
               )}
             </div>
 
-            {/* Email Field */}
             <div className="w-full flex flex-col mt-4">
               <div
                 className={`flex items-center w-full bg-transparent border ${errors.email ? "border-red-500" : "border-gray-300/60 focus-within:border-brand-teal"} h-12 rounded-full overflow-hidden pl-6 pr-4 gap-2 transition-colors`}
@@ -227,7 +225,6 @@ export default function Register() {
               )}
             </div>
 
-            {/* Password Field */}
             <div className="w-full flex flex-col mt-4">
               <div
                 className={`flex items-center w-full bg-transparent border ${errors.password ? "border-red-500" : "border-gray-300/60 focus-within:border-brand-teal"} h-12 rounded-full overflow-hidden pl-6 pr-4 gap-2 transition-colors`}
@@ -260,7 +257,6 @@ export default function Register() {
               )}
             </div>
 
-            {/* Confirm Password Field */}
             <div className="w-full flex flex-col mt-4">
               <div
                 className={`flex items-center w-full bg-transparent border ${errors.confirmPassword ? "border-red-500" : "border-gray-300/60 focus-within:border-brand-teal"} h-12 rounded-full overflow-hidden pl-6 pr-4 gap-2 transition-colors`}
@@ -298,7 +294,11 @@ export default function Register() {
               disabled={isSubmitting}
               className="mt-6 w-full h-11 rounded-full text-white bg-brand-teal hover:bg-brand-teal-hover transition-colors font-medium cursor-pointer disabled:opacity-70"
             >
-              {isSubmitting ? "Registering..." : "Register"}
+              {isSubmitting ? (
+                <Loader className="flex items-center justify-center scale-50"></Loader>
+              ) : (
+                "Register"
+              )}
             </button>
             <p className="text-gray-500/90 text-sm mt-4">
               Already have an account?{" "}

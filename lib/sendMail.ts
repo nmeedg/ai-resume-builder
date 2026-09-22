@@ -15,20 +15,6 @@ const LOGO_URL =
 
 export type MailType = "verify_email" | "reset_password";
 
-const ICONS: Record<MailType, string> = {
-  verify_email: `gy
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5 12.5L9.5 17L19 7" stroke="#0F6E56" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  `,
-  reset_password: `
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="5" y="11" width="14" height="10" rx="2.2" stroke="#0F6E56" stroke-width="2.2"/>
-      <path d="M8 11V7.5C8 5.01472 10.0147 3 12.5 3C14.9853 3 17 5.01472 17 7.5V11" stroke="#0F6E56" stroke-width="2.2" stroke-linecap="round"/>
-      <circle cx="12" cy="15.8" r="1.4" fill="#0F6E56"/>
-    </svg>
-  `,
-};
 
 export async function sendMail(email: string, type: MailType, url: string) {
   const from = `Tailrcv <${process.env.EMAIL_FROM}>`;
@@ -55,7 +41,6 @@ export async function sendMail(email: string, type: MailType, url: string) {
     ? "Confirm your email address to activate your Tailrcv account."
     : "Reset the password for your Tailrcv account.";
 
-  const icon = ICONS[type];
 
   const html = `
 <!DOCTYPE html>
@@ -109,19 +94,6 @@ export async function sendMail(email: string, type: MailType, url: string) {
           <tr>
             <td style="padding: 28px 40px 0 40px;">
               <div style="border-top: 1px solid #EEEFEA; line-height:0; font-size:0;">&nbsp;</div>
-            </td>
-          </tr>
-
-          <!-- Icon -->
-          <tr>
-            <td align="center" class="fluid-padding" style="padding: 32px 40px 0 40px;">
-              <table role="presentation" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td align="center" valign="middle" width="56" height="56" style="width:56px; height:56px; background-color:#E1F5EE; border-radius:50%;">
-                    ${icon}
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
 
