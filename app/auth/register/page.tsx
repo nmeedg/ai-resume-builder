@@ -60,6 +60,13 @@ export default function Register() {
     });
   };
 
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/workspace",
+    });
+  };
+
   return (
     <div className="flex h-screen w-full">
       <div className="w-full hidden md:inline-block">
@@ -143,7 +150,8 @@ export default function Register() {
 
             <button
               type="button"
-              className="w-full mt-6 bg-gray-500/10 flex items-center justify-center h-12 rounded-full hover:bg-gray-500/20 transition-colors"
+              onClick={handleGoogleSignIn}
+              className="w-full mt-6 bg-gray-500/10 flex items-center justify-center h-12 rounded-full hover:bg-gray-500/20 transition-colors cursor-pointer"
             >
               <Image
                 src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleLogo.svg"
